@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+//import { catchError, map, tap } from 'rxjs/operators';
+import { catchError,  tap } from 'rxjs/operators';
 import { EntityDef } from './classes/EntityDef';
 import { MessageService } from './message.service';
 
@@ -26,20 +27,22 @@ export class ContactDataService {
 
   
   /** GET getEntityDefs from the server */
-  getEntityDefs (entityType): Observable<EntityDef[]> {
+  getEntityDefs (entityType:string): Observable<EntityDef[]> {
 
     return new Observable<EntityDef[]>((observer)=>{    
-        let result =  this.http.get<EntityDef[]>(this.entityDefsUrl)      
+        let result =  this.http.get<EntityDef[]>(this.entityDefsUrl,httpOptions)      
         .pipe(
-            tap(_ =>{ console.log(`fetched entityDefs`);}),
+            tap(_ =>{ console.log(`Before entityDefs`);}),
+//            map(val => { val.length}),
+            tap(_ =>{ console.log(`After entityDefs`);}),
             catchError(this.handleError('getEntityDefs', []))
         );
         result.subscribe((data) => {
-            this.entityDefs = [];
             let entityDef : EntityDef;
-            for(let key in data){
-                if(!entityType || data[key].name==entityType){
-                    entityDef= new EntityDef(data[key].name,null,null);
+            for(let key in (data as any[])){
+                if(!entityType || data[key]._name==entityType){
+                    
+                    entityDef= new EntityDef(data[key]._name,null,null);
                     this.entityDefs.push(entityDef);
                 }
             }
@@ -49,8 +52,7 @@ export class ContactDataService {
         return {unsubscribe() {}};
     });
   }
-  
-
+    
   /**
    * Handle Http operation that failed.
    * Let the app continue.

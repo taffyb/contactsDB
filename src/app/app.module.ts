@@ -10,7 +10,7 @@ import { AddContactComponent } from './add-contact/add-contact.component';
 import { SettingsComponent } from './settings/settings.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { InMemoryDataService }  from './in-memory-data.service';
-import { ContactDataService }  from './contact-data.service';
+//import { ContactDataService }  from './contact-data.service';
 
 
 const appRoutes: Routes = [

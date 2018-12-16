@@ -5,7 +5,6 @@ import { EntityDef } from '../classes/EntityDef';
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
-  providers:[ContactDataService],
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
@@ -18,15 +17,14 @@ export class ContactListComponent implements OnInit {
       const that= this;
       const observabale = this.dataService.getEntityDefs(null);
 
-      observabale.subscribe(   {
-          next(data){this.entityDefs = data;
-              that.entityDefs = data;
-          },
-//          complete() { console.log('Finished sequence'); }
+      observabale.subscribe(
+          {next(data){that.entityDefs = data; console.log(`data ${JSON.stringify(data)}`);}
       });
     }
   ngOnInit() { 
       this.getEntityDefs();
+      
+      
   }
 
 }
